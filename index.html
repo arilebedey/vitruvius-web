@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Foxling Privacy Policy explaining how information is collected, used, stored, and protected."
+    />
+    <link rel="canonical" href="https://foxlingapp.com/privacy-policy" />
+    <script>
+      (() => {
+        try {
+          const colors = {
+            dark: "#241a14",
+            light: "#f8f9fa",
+          };
+          const storedTheme = localStorage.getItem("foxling-theme");
+          const theme =
+            storedTheme === "light" || storedTheme === "dark"
+              ? storedTheme
+              : window.matchMedia?.("(prefers-color-scheme: light)").matches
+                ? "light"
+                : "dark";
+
+          document.documentElement.setAttribute("data-theme", theme);
+          document.documentElement.style.backgroundColor =
+            colors[theme] || colors.dark;
+        } catch {
+          document.documentElement.setAttribute("data-theme", "dark");
+          document.documentElement.style.backgroundColor = "#241a14";
+        }
+      })();
+    </script>
+    <title>Privacy Policy | Foxling</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
