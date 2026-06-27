@@ -1,0 +1,112 @@
+name: Build and Deploy Web
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: arilebedey/vitruvius_web
+  DEPLOY_SUBDIR: vitruvius_backend
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    outputs:
+      sha_tag: ${{ steps.set-sha.outputs.sha_tag }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@v4
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata for Docker
+        id: meta
+        uses: docker/metadata-action@v6
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=sha,format=short
+            type=ref,event=branch
+            latest
+
+      - name: Set SHA tag output
+        id: set-sha
+        run: |
+          echo "sha_tag=$(echo '${{ steps.meta.outputs.tags }}' | grep -o 'sha-[^, ]*')" >> $GITHUB_OUTPUT
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v7
+        with:
+          context: .
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+
+  deploy:
+    needs: build
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Install SSH key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          known_hosts: ${{ secrets.SSH_KNOWN_HOSTS }}
+          if_key_exists: fail
+
+      - name: Deploy web to production server
+        run: |
+          ssh -o StrictHostKeyChecking=yes ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} 'bash -seu' <<'ENDSSH'
+            WEB_IMAGE_TAG="${{ needs.build.outputs.sha_tag }}"
+            DEPLOY_DIR="${HOME}/${{ env.DEPLOY_SUBDIR }}"
+            GH_PAT='${{ secrets.GHCR_PAT }}'
+            if [ -z "$GH_PAT" ]; then
+              echo "Missing GHCR_PAT secret" >&2
+              exit 1
+            fi
+
+            if [ -z "$WEB_IMAGE_TAG" ]; then
+              echo "Missing web image tag" >&2
+              exit 1
+            fi
+
+            echo "Deploying web image tag: $WEB_IMAGE_TAG"
+            echo "$GH_PAT" | docker login ghcr.io -u '${{ github.repository_owner }}' --password-stdin
+
+            cd "$DEPLOY_DIR"
+
+            if [ ! -f compose.yml ]; then
+              echo "Missing compose.yml in deploy directory: $DEPLOY_DIR" >&2
+              exit 1
+            fi
+
+            if [ ! -f .env ]; then
+              install -m 600 /dev/null .env
+            fi
+
+            if grep -q '^WEB_IMAGE_TAG=' .env; then
+              sed -i "s/^WEB_IMAGE_TAG=.*/WEB_IMAGE_TAG=${WEB_IMAGE_TAG}/" .env
+            else
+              printf '\nWEB_IMAGE_TAG=%s\n' "$WEB_IMAGE_TAG" >> .env
+            fi
+
+            docker compose pull web
+            docker compose up -d --no-deps web
+          ENDSSH
+
+      - name: Post job cleanup
+        if: always()
+        run: rm -rf "$HOME/.ssh"

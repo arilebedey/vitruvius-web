@@ -1,4 +1,5 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { HomePage } from "@/pages/HomePage";
 import { PrivacyPolicyPage } from "@/pages/PrivacyPolicyPage";
 
 export function App() {
@@ -11,6 +12,7 @@ export function App() {
     >
       <div className="min-h-screen bg-background">
         <Routes>
+          <Route path="/" element={<HomePage />} />
           <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
           <Route path="*" element={<Navigate to="/privacy-policy" replace />} />
         </Routes>
