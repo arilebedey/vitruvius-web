@@ -6,7 +6,7 @@ const lastUpdated = "June 27, 2026";
 type Theme = "light" | "dark";
 type CopyStatus = "idle" | "copied" | "failed";
 const themeBackgrounds: Record<Theme, string> = {
-  dark: "#241a14",
+  dark: "#1b1e1f",
   light: "#f8f9fa",
 };
 

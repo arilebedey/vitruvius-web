@@ -12,7 +12,7 @@
       (() => {
         try {
           const colors = {
-            dark: "#241a14",
+            dark: "#1b1e1f",
             light: "#f8f9fa",
           };
           const storedTheme = localStorage.getItem("foxling-theme");
@@ -28,7 +28,7 @@
             colors[theme] || colors.dark;
         } catch {
           document.documentElement.setAttribute("data-theme", "dark");
-          document.documentElement.style.backgroundColor = "#241a14";
+          document.documentElement.style.backgroundColor = "#1b1e1f";
         }
       })();
     </script>
