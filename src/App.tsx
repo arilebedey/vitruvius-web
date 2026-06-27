@@ -1,8 +1,60 @@
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import {
+  BrowserRouter,
+  Link,
+  Navigate,
+  Route,
+  Routes,
+  useLocation,
+} from "react-router-dom";
+import { useEffect, useState } from "react";
 import { HomePage } from "@/pages/HomePage";
 import { PrivacyPolicyPage } from "@/pages/PrivacyPolicyPage";
 
+const themeStorageKey = "foxling-theme";
+
+type Theme = "light" | "dark";
+
+const themeBackgrounds: Record<Theme, string> = {
+  dark: "#1b1e1f",
+  light: "#f8f9fa",
+};
+
+function getBrowserTheme(): Theme {
+  if (typeof window === "undefined") {
+    return "dark";
+  }
+
+  const storedTheme = window.localStorage.getItem(themeStorageKey);
+
+  if (storedTheme === "light" || storedTheme === "dark") {
+    return storedTheme;
+  }
+
+  return window.matchMedia?.("(prefers-color-scheme: light)").matches
+    ? "light"
+    : "dark";
+}
+
+function ScrollToTop() {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0 });
+  }, [pathname]);
+
+  return null;
+}
+
 export function App() {
+  const [theme, setTheme] = useState<Theme>(getBrowserTheme);
+  const nextTheme = theme === "light" ? "dark" : "light";
+
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", theme);
+    document.documentElement.style.backgroundColor = themeBackgrounds[theme];
+    window.localStorage.setItem(themeStorageKey, theme);
+  }, [theme]);
+
   return (
     <BrowserRouter
       future={{
@@ -10,12 +62,32 @@ export function App() {
         v7_relativeSplatPath: true,
       }}
     >
-      <div className="min-h-screen bg-background">
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
+      <ScrollToTop />
+      <div className="flex min-h-screen flex-col bg-background">
+        <div className="flex-1">
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </div>
+        <footer className="mx-auto flex w-full max-w-6xl flex-wrap items-center justify-between gap-4 border-t border-border px-5 py-8 text-sm text-foreground/70 sm:px-6">
+          <Link
+            to="/privacy-policy"
+            onClick={() => window.scrollTo({ top: 0, left: 0 })}
+            className="transition hover:text-foreground focus:outline-none focus:ring-2 focus:ring-special focus:ring-offset-2 focus:ring-offset-background"
+          >
+            Privacy Policy
+          </Link>
+          <button
+            type="button"
+            className="rounded-full border border-border bg-muted px-4 py-2 text-sm font-semibold text-foreground shadow-sm transition hover:bg-accent focus:outline-none focus:ring-2 focus:ring-special focus:ring-offset-2 focus:ring-offset-background"
+            onClick={() => setTheme(nextTheme)}
+            aria-label={`Switch to ${nextTheme} mode`}
+          >
+            Theme: {theme === "light" ? "Light" : "Dark"}
+          </button>
+        </footer>
       </div>
     </BrowserRouter>
   );

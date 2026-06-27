@@ -1,30 +1,8 @@
 import { useEffect, useState } from "react";
 
 const canonicalUrl = "https://foxlingapp.com/privacy-policy";
-const themeStorageKey = "foxling-theme";
 const lastUpdated = "June 27, 2026";
-type Theme = "light" | "dark";
 type CopyStatus = "idle" | "copied" | "failed";
-const themeBackgrounds: Record<Theme, string> = {
-  dark: "#1b1e1f",
-  light: "#f8f9fa",
-};
-
-function getBrowserTheme(): Theme {
-  if (typeof window === "undefined") {
-    return "dark";
-  }
-
-  const storedTheme = window.localStorage.getItem(themeStorageKey);
-
-  if (storedTheme === "light" || storedTheme === "dark") {
-    return storedTheme;
-  }
-
-  return window.matchMedia?.("(prefers-color-scheme: light)").matches
-    ? "light"
-    : "dark";
-}
 
 const sections = [
   {
@@ -477,7 +455,6 @@ function upsertCanonical(href: string) {
 }
 
 export function PrivacyPolicyPage() {
-  const [theme, setTheme] = useState<Theme>(getBrowserTheme);
   const [copyStatus, setCopyStatus] = useState<CopyStatus>("idle");
 
   useEffect(() => {
@@ -489,13 +466,6 @@ export function PrivacyPolicyPage() {
     upsertCanonical(canonicalUrl);
   }, []);
 
-  useEffect(() => {
-    document.documentElement.setAttribute("data-theme", theme);
-    document.documentElement.style.backgroundColor = themeBackgrounds[theme];
-    window.localStorage.setItem(themeStorageKey, theme);
-  }, [theme]);
-
-  const nextTheme = theme === "light" ? "dark" : "light";
   const copyButtonText =
     copyStatus === "copied"
       ? "Copied"
@@ -515,17 +485,7 @@ export function PrivacyPolicyPage() {
   };
 
   return (
-    <main className="min-h-screen bg-background px-5 py-12 text-foreground sm:px-6 sm:py-18">
-      <div className="fixed right-4 top-4 z-10">
-        <button
-          type="button"
-          className="rounded-full border border-border bg-muted px-4 py-2 text-sm font-semibold text-foreground shadow-sm transition hover:bg-accent focus:outline-none focus:ring-2 focus:ring-special focus:ring-offset-2 focus:ring-offset-background"
-          onClick={() => setTheme(nextTheme)}
-          aria-label={`Switch to ${nextTheme} mode`}
-        >
-          {theme === "light" ? "Dark" : "Light"}
-        </button>
-      </div>
+    <main className="bg-background px-5 py-12 text-foreground sm:px-6 sm:py-18">
       <article className="mx-auto w-full max-w-3xl">
         <p className="mb-3 text-sm font-bold uppercase tracking-[0.12em] text-special">
           Foxling
