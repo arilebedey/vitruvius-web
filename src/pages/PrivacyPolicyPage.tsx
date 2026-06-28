@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 
 const canonicalUrl = "https://foxlingapp.com/privacy-policy";
-const lastUpdated = "June 27, 2026";
+const lastUpdated = "June 28, 2026";
+const deletionFormUrl = "https://forms.gle/ADAbNTFuNndtmgMp9";
 type CopyStatus = "idle" | "copied" | "failed";
 
 const sections = [
@@ -39,12 +40,6 @@ const sections = [
             IDs used for app functionality, security, fraud prevention,
             compliance, and account management.
           </li>
-          <li>
-            <strong>Master password:</strong> if you choose to enable optional
-            data encryption, you enter a master password for that feature. We
-            do not store your master password on our servers. The app may store
-            it locally on your device to help keep sync unlocked.
-          </li>
         </ul>
       </>
     ),
@@ -69,12 +64,6 @@ const sections = [
           </li>
           <li>Comply with legal and platform requirements.</li>
         </ul>
-        <p>
-          If you enable optional data encryption, your master password is used
-          to encrypt or decrypt covered data for that feature. Because we do not
-          store your master password on our servers, we cannot use it to recover
-          or decrypt that data for you.
-        </p>
       </>
     ),
   },
@@ -96,10 +85,37 @@ const sections = [
           our users, or others.
         </p>
         <p>
-          Because we do not store your master password on our servers, we do not
-          provide it to service providers or other third parties. Service
-          providers may store or process encrypted data on our behalf where
-          needed to operate the app.
+          Our current trusted service providers are listed below. These are the
+          only trusted providers we currently use for these purposes, and we
+          will update this list if our providers change.
+        </p>
+        <ul>
+          <li>
+            <strong>DigitalOcean:</strong> hosting and operating various backend
+            services.
+          </li>
+          <li>
+            <strong>Cloudflare:</strong> object storage for uploaded images and
+            media.
+          </li>
+          <li>
+            <strong>Google:</strong> Google OAuth sign-in and Google Play app
+            distribution or purchase-related services.
+          </li>
+          <li>
+            <strong>Apple:</strong> iOS app distribution and purchase-related
+            services through the App Store.
+          </li>
+          <li>
+            <strong>RevenueCat:</strong> purchase and subscription handling, app
+            user IDs, product IDs, entitlements, and purchase webhooks.
+          </li>
+        </ul>
+        <p>
+          If you choose to encrypt your data with a master password, we do not
+          provide that password to service providers or other third parties.
+          Service providers may store or process encrypted data on our behalf
+          where needed to operate the app.
         </p>
       </>
     ),
@@ -110,14 +126,11 @@ const sections = [
       <>
         <p>
           If you choose to upload photos, Foxling collects and stores those
-          photos only to provide the app features you request. You are not
-          required to upload photos to use the app unless a specific feature
-          depends on them.
+          photos only to provide synchronization.
         </p>
         <p>
           Where optional data encryption applies to photos or other uploaded
-          content, that content may be stored in encrypted form. We do not store
-          the master password used for optional encryption on our servers.
+          content, that content may be stored in encrypted form.
         </p>
       </>
     ),
@@ -127,19 +140,14 @@ const sections = [
     body: (
       <>
         <p>
-          We use reasonable technical and organizational safeguards to protect
-          your information. Data is transmitted over secure connections using
-          encryption in transit.
+          We use industry-standard technical and organizational safeguards to
+          protect your information. Data is transmitted over secure connections
+          using encryption in transit and at rest.
         </p>
         <p>
-          Foxling may optionally offer additional data encryption using a master
-          password that you provide. We do not store your master password on our
-          servers, so we cannot recover it for you if it is lost.
-        </p>
-        <p>
-          If you lose your master password, encrypted data protected by that
-          password may be inaccessible because Foxling cannot reset or retrieve
-          the password for you.
+          If you use optional data encryption, keep your master password safe.
+          Foxling cannot reset or retrieve it for you, and encrypted data
+          protected by that password may be inaccessible if it is lost.
         </p>
       </>
     ),
@@ -202,8 +210,11 @@ const sections = [
           You can request deletion of your account and associated data here:
         </p>
         <p>
-          <a href="https://forms.gle/ADAbNTFuNndtmgMp9">
-            https://forms.gle/ADAbNTFuNndtmgMp9
+          <a
+            href={deletionFormUrl}
+            className="inline-flex rounded-md border border-border bg-muted px-4 py-2 text-base font-semibold !text-foreground !no-underline shadow-sm transition hover:bg-accent focus:outline-none focus:ring-2 focus:ring-special focus:ring-offset-2 focus:ring-offset-background sm:text-sm"
+          >
+            Open deletion request form
           </a>
         </p>
         <p>
@@ -211,8 +222,11 @@ const sections = [
           your entire account using the same form:
         </p>
         <p>
-          <a href="https://forms.gle/ADAbNTFuNndtmgMp9">
-            https://forms.gle/ADAbNTFuNndtmgMp9
+          <a
+            href={deletionFormUrl}
+            className="inline-flex rounded-md border border-border bg-muted px-4 py-2 text-base font-semibold !text-foreground !no-underline shadow-sm transition hover:bg-accent focus:outline-none focus:ring-2 focus:ring-special focus:ring-offset-2 focus:ring-offset-background sm:text-sm"
+          >
+            Open deletion request form
           </a>
         </p>
         <p>
@@ -244,15 +258,10 @@ const sections = [
           </li>
           <li>Choose whether to upload photos.</li>
           <li>
-            Choose whether to enable optional data encryption where available.
+            Choose whether to enable optional data encryption when syncing data
+            within Foxling.
           </li>
-          <li>Disable certain permissions through your device settings.</li>
         </ul>
-        <p>
-          You are responsible for keeping your master password safe if you use
-          optional data encryption. Foxling cannot retrieve or reset a master
-          password that is not stored on our servers.
-        </p>
       </>
     ),
   },
@@ -289,7 +298,7 @@ const privacyPolicyMarkdown = [
   "",
   `Last updated: ${lastUpdated}`,
   "",
-  'Foxling ("we," "our," or "us") operates the Foxling mobile app. This Privacy Policy explains how Foxling collects, uses, stores, and protects information when you use the app, including optional data encryption using a user-provided master password.',
+  'Foxling ("we," "our," or "us") operates the Foxling mobile app. This Privacy Policy explains how Foxling collects, uses, stores, and protects information when you use the app, including optional data encryption.',
   "",
   "## Information We Collect",
   "",
@@ -302,7 +311,6 @@ const privacyPolicyMarkdown = [
   "- **App activity:** app interactions and usage events.",
   "- **App performance information:** crash logs, diagnostics, and other app performance data.",
   "- **Device or other IDs:** device identifiers or similar IDs used for app functionality, security, fraud prevention, compliance, and account management.",
-  "- **Master password:** if you choose to enable optional data encryption, you enter a master password for that feature. We do not store your master password on our servers. The app may store it locally on your device to help keep sync unlocked.",
   "",
   "## How We Use Information",
   "",
@@ -319,8 +327,6 @@ const privacyPolicyMarkdown = [
   "- Provide optional data encryption features when you choose to use them.",
   "- Comply with legal and platform requirements.",
   "",
-  "If you enable optional data encryption, your master password is used to encrypt or decrypt covered data for that feature. Because we do not store your master password on our servers, we cannot use it to recover or decrypt that data for you.",
-  "",
   "## Data Sharing",
   "",
   "We do not sell your personal information.",
@@ -329,21 +335,27 @@ const privacyPolicyMarkdown = [
   "",
   "We may also disclose information if required by law, regulation, legal process, or to protect the rights, safety, and security of Foxling, our users, or others.",
   "",
-  "Because we do not store your master password on our servers, we do not provide it to service providers or other third parties. Service providers may store or process encrypted data on our behalf where needed to operate the app.",
+  "Our current trusted service providers are listed below. These are the only trusted providers we currently use for these purposes, and we will update this list if our providers change.",
+  "",
+  "- **DigitalOcean:** hosting and operating various backend services.",
+  "- **Cloudflare:** object storage for uploaded images and media.",
+  "- **Google:** Google OAuth sign-in and Google Play app distribution or purchase-related services.",
+  "- **Apple:** iOS app distribution and purchase-related services through the App Store.",
+  "- **RevenueCat:** purchase and subscription handling, app user IDs, product IDs, entitlements, and purchase webhooks.",
+  "",
+  "If you choose to encrypt your data with a master password, we do not provide that password to service providers or other third parties. Service providers may store or process encrypted data on our behalf where needed to operate the app.",
   "",
   "## Photos and Optional Uploads",
   "",
-  "If you choose to upload photos, Foxling collects and stores those photos only to provide the app features you request. You are not required to upload photos to use the app unless a specific feature depends on them.",
+  "If you choose to upload photos, Foxling collects and stores those photos only to provide synchronization.",
   "",
-  "Where optional data encryption applies to photos or other uploaded content, that content may be stored in encrypted form. We do not store the master password used for optional encryption on our servers.",
+  "Where optional data encryption applies to photos or other uploaded content, that content may be stored in encrypted form.",
   "",
   "## Data Security",
   "",
-  "We use reasonable technical and organizational safeguards to protect your information. Data is transmitted over secure connections using encryption in transit.",
+  "We use industry-standard technical and organizational safeguards to protect your information. Data is transmitted over secure connections using encryption in transit and at rest.",
   "",
-  "Foxling may optionally offer additional data encryption using a master password that you provide. We do not store your master password on our servers, so we cannot recover it for you if it is lost.",
-  "",
-  "If you lose your master password, encrypted data protected by that password may be inaccessible because Foxling cannot reset or retrieve the password for you.",
+  "If you use optional data encryption, keep your master password safe. Foxling cannot reset or retrieve it for you, and encrypted data protected by that password may be inaccessible if it is lost.",
   "",
   "## Full User Encryption",
   "",
@@ -365,11 +377,11 @@ const privacyPolicyMarkdown = [
   "",
   "You can request deletion of your account and associated data here:",
   "",
-  "https://forms.gle/ADAbNTFuNndtmgMp9",
+  `[Open deletion request form](${deletionFormUrl})`,
   "",
   "You can also request deletion of certain app data without deleting your entire account using the same form:",
   "",
-  "https://forms.gle/ADAbNTFuNndtmgMp9",
+  `[Open deletion request form](${deletionFormUrl})`,
   "",
   "Some information may be retained where required for legal, security, fraud prevention, tax, accounting, or compliance purposes.",
   "",
@@ -382,10 +394,7 @@ const privacyPolicyMarkdown = [
   "- Access, update, or delete certain account information in the app where available.",
   "- Request account deletion or data deletion using the deletion form above.",
   "- Choose whether to upload photos.",
-  "- Choose whether to enable optional data encryption where available.",
-  "- Disable certain permissions through your device settings.",
-  "",
-  "You are responsible for keeping your master password safe if you use optional data encryption. Foxling cannot retrieve or reset a master password that is not stored on our servers.",
+  "- Choose whether to enable optional data encryption when syncing data within Foxling.",
   "",
   "## Changes to This Policy",
   "",
@@ -487,9 +496,6 @@ export function PrivacyPolicyPage() {
   return (
     <main className="bg-background px-5 py-12 text-foreground sm:px-6 sm:py-18">
       <article className="mx-auto w-full max-w-3xl">
-        <p className="mb-3 text-sm font-bold uppercase tracking-[0.12em] text-special">
-          Foxling
-        </p>
         <div className="flex flex-wrap items-center gap-x-4 gap-y-3 sm:gap-x-5">
           <h1 className="text-5xl font-bold leading-none tracking-normal sm:text-7xl">
             Privacy Policy
@@ -511,7 +517,7 @@ export function PrivacyPolicyPage() {
             Foxling ("we," "our," or "us") operates the Foxling mobile app. This
             Privacy Policy explains how Foxling collects, uses, stores, and
             protects information when you use the app, including optional data
-            encryption using a user-provided master password.
+            encryption.
           </p>
           {sections.map((section) => (
             <section
