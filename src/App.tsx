@@ -64,6 +64,23 @@ export function App() {
     >
       <ScrollToTop />
       <div className="flex min-h-dvh flex-col bg-background">
+        <header className="w-full px-5 py-5 sm:px-6 sm:py-6">
+          <div className="mx-auto flex w-full max-w-6xl items-center">
+            <Link
+              to="/"
+              className="inline-flex items-center gap-4 rounded-md text-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-special focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+              aria-label="Foxling home"
+            >
+              <img
+                src="/icon/icon-cropped.png"
+                alt=""
+                className="h-10 w-auto shrink-0 sm:h-11"
+                aria-hidden="true"
+              />
+              <span className="text-2xl font-semibold sm:text-3xl">Foxling</span>
+            </Link>
+          </div>
+        </header>
         <div className="flex-1">
           <Routes>
             <Route path="/" element={<HomePage />} />
@@ -76,13 +93,13 @@ export function App() {
             <Link
               to="/privacy-policy"
               onClick={() => window.scrollTo({ top: 0, left: 0 })}
-              className="transition hover:text-foreground focus:outline-none focus:ring-2 focus:ring-special focus:ring-offset-2 focus:ring-offset-background"
+              className="transition hover:text-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-special focus-visible:ring-offset-2 focus-visible:ring-offset-background"
             >
               Privacy Policy
             </Link>
             <button
               type="button"
-              className="rounded-full border border-border bg-muted px-4 py-2 text-sm font-semibold text-foreground shadow-sm transition hover:bg-accent focus:outline-none focus:ring-2 focus:ring-special focus:ring-offset-2 focus:ring-offset-background"
+              className="rounded-full border border-border bg-muted px-4 py-2 text-sm font-semibold text-foreground shadow-sm transition hover:bg-accent focus:outline-none focus-visible:ring-2 focus-visible:ring-special focus-visible:ring-offset-2 focus-visible:ring-offset-background"
               onClick={() => setTheme(nextTheme)}
               aria-label={`Switch to ${nextTheme} mode`}
             >

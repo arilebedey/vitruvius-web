@@ -212,7 +212,7 @@ const sections = [
         <p>
           <a
             href={deletionFormUrl}
-            className="inline-flex rounded-md border border-border bg-muted px-4 py-2 text-base font-semibold !text-foreground !no-underline shadow-sm transition hover:bg-accent focus:outline-none focus:ring-2 focus:ring-special focus:ring-offset-2 focus:ring-offset-background sm:text-sm"
+            className="inline-flex rounded-md border border-border bg-muted px-4 py-2 text-base font-semibold !text-foreground !no-underline shadow-sm transition hover:bg-accent focus:outline-none focus-visible:ring-2 focus-visible:ring-special focus-visible:ring-offset-2 focus-visible:ring-offset-background sm:text-sm"
           >
             Open deletion request form
           </a>
@@ -224,7 +224,7 @@ const sections = [
         <p>
           <a
             href={deletionFormUrl}
-            className="inline-flex rounded-md border border-border bg-muted px-4 py-2 text-base font-semibold !text-foreground !no-underline shadow-sm transition hover:bg-accent focus:outline-none focus:ring-2 focus:ring-special focus:ring-offset-2 focus:ring-offset-background sm:text-sm"
+            className="inline-flex rounded-md border border-border bg-muted px-4 py-2 text-base font-semibold !text-foreground !no-underline shadow-sm transition hover:bg-accent focus:outline-none focus-visible:ring-2 focus-visible:ring-special focus-visible:ring-offset-2 focus-visible:ring-offset-background sm:text-sm"
           >
             Open deletion request form
           </a>
@@ -496,22 +496,20 @@ export function PrivacyPolicyPage() {
   return (
     <main className="bg-background px-5 py-12 text-foreground sm:px-6 sm:py-18">
       <article className="mx-auto w-full max-w-3xl">
-        <div className="flex flex-wrap items-center gap-x-4 gap-y-3 sm:gap-x-5">
-          <h1 className="text-5xl font-bold leading-none tracking-normal sm:text-7xl">
-            Privacy Policy
-          </h1>
-          <button
-            type="button"
-            className="mt-1 h-10 rounded-md border border-border bg-muted px-3 text-sm font-semibold text-foreground shadow-sm transition hover:bg-accent focus:outline-none focus:ring-2 focus:ring-special focus:ring-offset-2 focus:ring-offset-background sm:mt-2"
-            onClick={handleCopyMarkdown}
-            aria-live="polite"
-          >
-            {copyButtonText}
-          </button>
-        </div>
+        <h1 className="text-5xl font-bold leading-none tracking-normal sm:text-7xl">
+          Privacy Policy
+        </h1>
         <p className="mt-6 text-base text-muted-foreground">
           Last updated: {lastUpdated}
         </p>
+        <button
+          type="button"
+          className="mt-3 rounded-md border border-border bg-muted px-3 py-1.5 text-sm font-semibold leading-none text-foreground shadow-sm transition hover:bg-accent focus:outline-none focus-visible:ring-2 focus-visible:ring-special focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+          onClick={handleCopyMarkdown}
+          aria-live="polite"
+        >
+          {copyButtonText}
+        </button>
         <div className="mt-10 space-y-8 text-lg leading-8 text-foreground/85 sm:mt-14">
           <p>
             Foxling ("we," "our," or "us") operates the Foxling mobile app. This

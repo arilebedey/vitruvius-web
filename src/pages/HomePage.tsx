@@ -80,8 +80,8 @@ export function HomePage() {
 
   useEffect(() => {
     const rotationTimer = window.setInterval(() => {
-      setHeroWordIndex((currentIndex) =>
-        (currentIndex + 1) % rotatingHeroWords.length,
+      setHeroWordIndex(
+        (currentIndex) => (currentIndex + 1) % rotatingHeroWords.length,
       );
     }, 1800);
 
@@ -90,8 +90,8 @@ export function HomePage() {
 
   useEffect(() => {
     const slideshowTimer = window.setInterval(() => {
-      setScreenshotIndex((currentIndex) =>
-        (currentIndex + 1) % heroScreenshots.length,
+      setScreenshotIndex(
+        (currentIndex) => (currentIndex + 1) % heroScreenshots.length,
       );
     }, 3200);
 
@@ -123,9 +123,9 @@ export function HomePage() {
               ))}
             </span>
           </h1>
-          <p className="mt-6 max-w-2xl text-lg leading-8 text-foreground/85">
-            Foxling gives your personal knowledge a place to land and a way to
-            come back when you need it.
+          <p className="mt-6 max-w-2xl text-2xl leading-8 text-foreground/85">
+            Foxling exists to make you <strong>hyped</strong> about saving and
+            exploring your knowledge.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
             <button
@@ -139,7 +139,7 @@ export function HomePage() {
               href="https://x.com/ariupgrade"
               target="_blank"
               rel="noreferrer"
-              className="inline-flex items-center rounded-full border border-border bg-background px-5 py-3 text-sm font-semibold text-foreground shadow-sm transition hover:bg-accent focus:outline-none focus:ring-2 focus:ring-special focus:ring-offset-2 focus:ring-offset-background"
+              className="inline-flex items-center rounded-full border border-border bg-background px-5 py-3 text-sm font-semibold text-foreground shadow-sm transition hover:bg-accent focus:outline-none focus-visible:ring-2 focus-visible:ring-special focus-visible:ring-offset-2 focus-visible:ring-offset-background"
             >
               Twitter
             </a>
@@ -147,7 +147,7 @@ export function HomePage() {
               href="https://www.instagram.com/foxling.app"
               target="_blank"
               rel="noreferrer"
-              className="inline-flex items-center rounded-full border border-border bg-background px-5 py-3 text-sm font-semibold text-foreground shadow-sm transition hover:bg-accent focus:outline-none focus:ring-2 focus:ring-special focus:ring-offset-2 focus:ring-offset-background"
+              className="inline-flex items-center rounded-full border border-border bg-background px-5 py-3 text-sm font-semibold text-foreground shadow-sm transition hover:bg-accent focus:outline-none focus-visible:ring-2 focus-visible:ring-special focus-visible:ring-offset-2 focus-visible:ring-offset-background"
             >
               Instagram
             </a>
@@ -176,7 +176,8 @@ export function HomePage() {
         <div className="grid gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:items-start">
           <div>
             <h2 className="max-w-2xl text-3xl font-bold leading-tight tracking-normal sm:text-5xl">
-              What Foxling lets you achieve
+              What <span className="text-special">Foxling</span> enables you to
+              do
             </h2>
             <p className="mt-5 max-w-2xl text-lg leading-8 text-foreground/80">
               Foxling has an all-encompassing Search section that lets you dive
@@ -202,8 +203,8 @@ export function HomePage() {
         </div>
 
         <p className="mt-8 max-w-3xl border-l-2 border-special pl-4 text-sm leading-6 text-foreground/70">
-          <span className="font-semibold text-special">Tip:</span> You can
-          name, save, and optionally sync any search query that you want to keep
+          <span className="font-semibold text-special">Tip:</span> You can name,
+          save, and optionally sync any search query that you want to keep
           revisiting.
         </p>
       </section>
